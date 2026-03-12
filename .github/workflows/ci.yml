@@ -20,13 +20,13 @@ jobs:
           node-version: '24'
       - name: Install backend dependencies
         working-directory: server
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Lint backend
         working-directory: server
         run: npm run lint -- --max-warnings=0
       - name: Install frontend deps
         working-directory: client
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Lint frontend
         working-directory: client
         run: npm run lint -- --max-warnings=0
