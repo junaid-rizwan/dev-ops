@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function Home() {
   const [formdata, setFormData] = useState({
@@ -27,7 +27,7 @@ export default function Home() {
     setFormData({ title: "", description: "" });
     getTasks();
   }
-  const getTasks = async () => {
+  const getTasks = useCallback(async () => {
     const res = await fetch(`${BASE_URL}/tasks`, {
       method: "GET",
       headers: {
@@ -36,7 +36,7 @@ export default function Home() {
     });
     const data = await res.json();
     setTasks(data);
-  }
+  }, [BASE_URL]);
 
   const deleteTask = async (id) => {
     const res = await fetch(`${BASE_URL}/tasks/${id}`, {
