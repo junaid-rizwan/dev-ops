@@ -1,0 +1,37 @@
+name: build-and-lint
+
+
+#trigger the workflow on push and pull request
+on:
+  push:
+    branches: [main,dev]
+  pull_request:
+    branches: [main,dev]
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install backend dependencies
+        working-directory: server
+        run: npm ci --legacy-peer-deps
+      - name: Lint backend
+        working-directory: server
+        run: npm run lint -- --max-warnings=0
+      - name: Install frontend deps
+        working-directory: client
+        run: npm ci --legacy-peer-deps
+      - name: Lint frontend
+        working-directory: client
+        run: npm run lint -- --max-warnings=0
+      - name: Build backend Docker image
+        run: docker build -t backend ./server
+      - name: Build frontend Docker image
+        run: docker build -t frontend ./client
+
