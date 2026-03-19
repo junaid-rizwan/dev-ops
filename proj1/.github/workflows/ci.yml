@@ -35,3 +35,19 @@ jobs:
       - name: Build frontend Docker image
         run: docker build -t frontend ./client
 
+  # deploy-ec2:
+  #   needs: build-and-lint
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Deploy to EC2
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       with:
+  #         host: ${{ secrets.EC2_HOST }}
+  #         username: ${{ secrets.EC2_USER }}
+  #         key: ${{ secrets.EC2_KEY }}
+  #         script: |
+  #           cd devops
+  #           git pull
+  #           docker compose down
+  #           docker compose up -d --build
